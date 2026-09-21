@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Фермата на Стелко</title>
+<meta name="description" content="Демо онлайн магазин за мед — курсов проект по бизнес информационни системи.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#content">Към съдържанието</a>
+
+<!-- ============================================================
+     СКРИТИ SVG ИЛЮСТРАЦИИ (бурканчета) — преизползват се навсякъде
+     чрез <use href="#jar-...">. За да смениш цветовете, редактирай
+     градиентите тук долу.
+============================================================= -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="grad-gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F5C445"/>
+      <stop offset="100%" stop-color="#C97A1A"/>
+    </linearGradient>
+    <linearGradient id="grad-amber" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#BD7C1E"/>
+      <stop offset="100%" stop-color="#7A4A0C"/>
+    </linearGradient>
+    <linearGradient id="grad-cream" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FBF0CE"/>
+      <stop offset="100%" stop-color="#E7CB8E"/>
+    </linearGradient>
+    <linearGradient id="grad-sage" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#93A374"/>
+      <stop offset="100%" stop-color="#556246"/>
+    </linearGradient>
+
+    <symbol id="jar-gold" viewBox="0 0 120 160">
+      <rect x="14" y="46" width="92" height="98" rx="18" fill="url(#grad-gold)"/>
+      <rect x="42" y="34" width="36" height="16" rx="4" fill="url(#grad-gold)"/>
+      <polygon points="80,20 70,37.3 50,37.3 40,20 50,2.7 70,2.7" fill="#33220F"/>
+      <polygon points="74,100 67,112.1 53,112.1 46,100 53,87.9 67,87.9" fill="#FFFDF7" opacity="0.92"/>
+      <ellipse cx="34" cy="80" rx="9" ry="30" fill="#FFFFFF" opacity="0.18"/>
+    </symbol>
+
+    <symbol id="jar-amber" viewBox="0 0 120 160">
+      <rect x="14" y="46" width="92" height="98" rx="18" fill="url(#grad-amber)"/>
+      <rect x="42" y="34" width="36" height="16" rx="4" fill="url(#grad-amber)"/>
+      <polygon points="80,20 70,37.3 50,37.3 40,20 50,2.7 70,2.7" fill="#33220F"/>
+      <polygon points="74,100 67,112.1 53,112.1 46,100 53,87.9 67,87.9" fill="#FFFDF7" opacity="0.92"/>
+      <ellipse cx="34" cy="80" rx="9" ry="30" fill="#FFFFFF" opacity="0.14"/>
+    </symbol>
+
+    <symbol id="jar-cream" viewBox="0 0 120 160">
+      <rect x="14" y="46" width="92" height="98" rx="18" fill="url(#grad-cream)"/>
+      <rect x="42" y="34" width="36" height="16" rx="4" fill="url(#grad-cream)"/>
+      <polygon points="80,20 70,37.3 50,37.3 40,20 50,2.7 70,2.7" fill="#33220F"/>
+      <polygon points="74,100 67,112.1 53,112.1 46,100 53,87.9 67,87.9" fill="#7A4A0C" opacity="0.85"/>
+      <ellipse cx="34" cy="80" rx="9" ry="30" fill="#FFFFFF" opacity="0.3"/>
+    </symbol>
+
+    <symbol id="jar-sage" viewBox="0 0 120 160">
+      <rect x="14" y="46" width="92" height="98" rx="18" fill="url(#grad-sage)"/>
+      <rect x="42" y="34" width="36" height="16" rx="4" fill="url(#grad-sage)"/>
+      <polygon points="80,20 70,37.3 50,37.3 40,20 50,2.7 70,2.7" fill="#33220F"/>
+      <polygon points="74,100 67,112.1 53,112.1 46,100 53,87.9 67,87.9" fill="#FFFDF7" opacity="0.92"/>
+      <ellipse cx="34" cy="80" rx="9" ry="30" fill="#FFFFFF" opacity="0.16"/>
+    </symbol>
+
+    <symbol id="jar-ribbon" viewBox="0 0 120 160">
+      <rect x="14" y="46" width="92" height="98" rx="18" fill="url(#grad-gold)"/>
+      <rect x="42" y="34" width="36" height="16" rx="4" fill="url(#grad-gold)"/>
+      <polygon points="80,20 70,37.3 50,37.3 40,20 50,2.7 70,2.7" fill="#33220F"/>
+      <ellipse cx="34" cy="80" rx="9" ry="30" fill="#FFFFFF" opacity="0.18"/>
+      <rect x="56" y="0" width="8" height="146" fill="#C1442C" opacity="0.9"/>
+      <path d="M60 14 L44 2 L44 22 Z" fill="#C1442C"/>
+      <path d="M60 14 L76 2 L76 22 Z" fill="#C1442C"/>
+      <circle cx="60" cy="14" r="5" fill="#8F2F1D"/>
+    </symbol>
+
+    <symbol id="icon-hex" viewBox="0 0 100 100">
+      <polygon points="75,10 100,50 75,90 25,90 0,50 25,10" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ============================================================
+     ХЕДЪР
+============================================================= -->
+<header class="site-header">
+  <div class="announcement-bar">
+    🍯 Добре дошли
+  </div>
+
+  <div class="nav-wrap">
+    <a href="#top" class="logo">
+      <img src="logo.png" alt="Пчелин" class="logo-badge">
+      <span class="logo-word">Фермата на Стелко</span>
+    </a>
+
+    <nav class="main-nav" id="mainNav">
+      <a href="#top">Начало</a>
+      <a href="#shop">Магазин</a>
+      <a href="#about">За нас</a>
+      <a href="#how">Как поръчваш</a>
+      <a href="#faq">Въпроси</a>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="cart-btn" id="cartBtn" aria-label="Отвори количката">
+        <svg viewBox="0 0 24 24" class="cart-icon" aria-hidden="true">
+          <path d="M3 4h2l2.4 12.4A2 2 0 0 0 9.36 18H18a2 2 0 0 0 1.96-1.6L21.6 8H6.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="10" cy="21" r="1.6" fill="currentColor"/>
+          <circle cx="17.5" cy="21" r="1.6" fill="currentColor"/>
+        </svg>
+        <span class="cart-count" id="cartCount" hidden>0</span>
+      </button>
+      <button class="nav-toggle" id="navToggle" aria-label="Отвори менюто" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="content">
+
+  <!-- ============================================================
+       HERO
+  ============================================================= -->
+  <section class="hero" id="top">
+    <div class="hero-inner">
+      <p class="eyebrow"></p>
+      <h1 class="hero-title">Свежо изваден биологичен мед и пчелен прашец</h1>
+      <p class="hero-sub">Всяка лъжичка разказва историята не един кошер.</p>
+      </div>
+  </section>
+
+  <!-- ============================================================
+       ДОВЕРИЕ / СТАТИСТИКА (пчелна пита от факти)
+  ============================================================= -->
+  <section class="trust" id="about">
+    <div class="section-head">
+      <h2>Кои сме ние?</h2>
+      <p class="section-sub">Ние сме малък семеен пчелин, разположен в живописното село Попина, край Силистра. Пчелинът е разположен в защитена гориста местност с натура 2000. С любов и внимание се грижим за нашите пчелни семейства и за качеството на всеки продукт, който стига до вас.
+
+За нас пчеларството е не просто бизнес, а семейна традиция. Подбираме внимателно всеки продукт и се стремим да ви предложим чисти, натуралени и качествени пчелни продукти – директно от нашия пчелин до вашия дом.</p>
+    </div>
+
+    <div class="hex-cluster reveal">
+      <div class="hex-stat">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#icon-hex"/></svg>
+        <div class="hex-stat-inner">
+          <strong>200+</strong>
+          <span>пчелни семейства</span>
+        </div>
+      </div>
+      <div class="hex-stat">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#icon-hex"/></svg>
+        <div class="hex-stat-inner">
+          <strong>0%</strong>
+          <span>добавена захар</span>
+        </div>
+      </div>
+      <div class="hex-stat hex-stat--offset">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#icon-hex"/></svg>
+        <div class="hex-stat-inner">
+          <strong>48ч</strong>
+          <span>от кошера до вратата</span>
+        </div>
+      </div>
+            <div class="hex-stat hex-stat--offset">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#icon-hex"/></svg>
+        <div class="hex-stat-inner">
+          <strong>БИО</strong>
+          <span>Само биологични продукти</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       МАГАЗИН
+  ============================================================= -->
+  <section class="shop" id="shop">
+    <div class="section-head">
+      <p class="eyebrow">Магазин</p>
+      <h2>Избери своя продукт</h2>
+    </div>
+
+    <div class="category-filter" id="categoryFilter"></div>
+    <div class="product-grid" id="productGrid"></div>
+  </section>
+
+  <!-- ============================================================
+       КАК ПОРЪЧВАШ (реална последователност → номерирани стъпки)
+  ============================================================= -->
+  <section class="how" id="how">
+    <div class="section-head">
+      <p class="eyebrow">Как работи</p>
+      <h2>От кошера до твоята врата в 4 лесни стъпки</h2>
+    </div>
+    <ol class="steps">
+      <li class="step reveal">
+        <span class="step-num">01</span>
+        <h3>Избери желаните продукти</h3>
+        <p>Разгледай магазина и добави любимите си бурканчета в количката.</p>
+      </li>
+      <li class="step reveal">
+        <span class="step-num">02</span>
+        <h3>Провери количката</h3>
+        <p>Коригирай количествата и виж крайната сума преди поръчка.</p>
+      </li>
+      <li class="step reveal">
+        <span class="step-num">03</span>
+        <h3>Въведи данни за доставка</h3>
+        <p>Адрес, телефон и предпочитан начин на плащане — само веднъж.</p>
+      </li>
+      <li class="step reveal">
+        <span class="step-num">04</span>
+        <h3>Получи навреме</h3>
+        <p>Доставка до 2 работни дни, директно от пчелина до теб.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============================================================
+       ЧЕСТО ЗАДАВАНИ ВЪПРОСИ
+  ============================================================= -->
+  <section class="faq" id="faq">
+    <div class="section-head">
+      <p class="eyebrow">Въпроси</p>
+      <h2>Често задавани въпроси</h2>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>Как да позная качествен мед?</span>
+          <span class="faq-plus" aria-hidden="true"></span>
+        </button>
+        <div class="faq-answer"><div>
+          <p>Истинският мед е гъст, не се разделя лесно на слоеве и след време естествено кристализира. За пълна сигурност всеки наш буркан минава лабораторен тест, чиито резултати са налични при поискване.</p>
+        </div></div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>Какви са начините за доставка и плащане?</span>
+          <span class="faq-plus" aria-hidden="true"></span>
+        </button>
+        <div class="faq-answer"><div>
+          <p>Доставяме до адрес или до офис на куриер в цялата страна. Приемаме плащане с наложен платеж или онлайн с карта при завършване на поръчката.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>Мога ли да върна или заменя поръчка?</span>
+          <span class="faq-plus" aria-hidden="true"></span>
+        </button>
+        <div class="faq-answer"><div>
+          <p>Да — при неотворена опаковка приемаме връщане до 14 дни след доставка съгласно правото на отказ при онлайн покупки.</p>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       БЮЛЕТИН (декоративен, без реален бекенд)
+  ============================================================= -->
+  <section class="newsletter">
+    <div class="newsletter-inner">
+      <div>
+        <h2>Абонирай се за следки оферти</h2>
+        <p>Веднъж месечно — нова партида мед, нов пчелар, без спам.</p>
+      </div>
+      <form id="newsletterForm" class="newsletter-form">
+        <input type="email" placeholder="твоят имейл" required aria-label="Имейл за бюлетин">
+        <button type="submit" class="btn btn-primary">Абонирай се</button>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     ФУТЪР
+============================================================= -->
+<footer class="site-footer" id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#top" class="logo logo--footer">
+        <svg class="logo-jar" viewBox="0 0 120 160" aria-hidden="true"><use href="#jar-gold"/></svg>
+        <span class="logo-word">Пчелин</span>
+      </a>
+      <p>Демо онлайн магазин, изграден като курсов проект по бизнес информационни системи. Замени този текст с реалното описание на твоя бранд.</p>
+      <div class="socials">
+        <a href="#" aria-label="Facebook">FB</a>
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="YouTube">YT</a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h3>Навигация</h3>
+      <a href="#shop">Магазин</a>
+      <a href="#about">За нас</a>
+      <a href="#how">Как поръчваш</a>
+      <a href="#faq">Въпроси</a>
+    </div>
+
+    <div class="footer-col">
+      <h3>Контакти <span class="edit-flag">[редактирай]</span></h3>
+      <p>гр. Силистра, с. Попина</p>
+      <p><a href="tel:+359000000000">+359 000 000 000</a></p>
+      <p><a href="mailto:info@example.bg">info@example.bg</a></p>
+    </div>
+
+    <div class="footer-col">
+      <h3>Доставка</h3>
+      <p>Доставка до адрес в цяла България</p>
+      <p>Наложен платеж или онлайн плащане</p>
+      <p>Безплатна доставка над 40 €</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2026 Пчелин — демо проект. Не е реален онлайн магазин.</p>
+    <p class="footer-note">Изграден с HTML / CSS / JS · курсов проект БИС</p>
+  </div>
+</footer>
+
+<!-- ============================================================
+     ОВЪРЛЕЙ ЗА КОЛИЧКА / CHECKOUT
+============================================================= -->
+<div class="overlay" id="overlay"></div>
+
+<aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+  <div class="cart-drawer-head">
+    <h2>Твоята количка</h2>
+    <button class="icon-btn" id="closeCart" aria-label="Затвори количката">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-drawer-foot">
+    <div class="cart-subtotal-row">
+      <span>Обща сума</span>
+      <strong id="cartSubtotal">0.00 €</strong>
+    </div>
+    <button class="btn btn-primary btn-block" id="checkoutBtn" disabled>Завърши поръчката</button>
+  </div>
+</aside>
+
+<div class="modal" id="checkoutModal" aria-hidden="true">
+  <div class="modal-panel">
+    <button class="icon-btn modal-close" id="closeCheckout" aria-label="Затвори">✕</button>
+
+    <div id="checkoutForm">
+      <h2>Завършване на поръчката</h2>
+      <div class="order-summary" id="orderSummary"></div>
+
+      <form id="orderForm">
+        <div class="field-row">
+          <label>Име и фамилия
+            <input type="text" name="name" required>
+          </label>
+          <label>Телефон
+            <input type="tel" name="phone" required>
+          </label>
+        </div>
+        <label>Имейл
+          <input type="email" name="email" required>
+        </label>
+        <label>Адрес за доставка
+          <input type="text" name="address" required>
+        </label>
+        <label>Град
+          <input type="text" name="city" required>
+        </label>
+
+        <fieldset>
+          <legend>Начин на доставка</legend>
+          <label class="radio"><input type="radio" name="delivery" value="address" checked> До адрес</label>
+          <label class="radio"><input type="radio" name="delivery" value="office"> До офис на куриер</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Начин на плащане</legend>
+          <label class="radio"><input type="radio" name="payment" value="cod" checked> Наложен платеж</label>
+          <label class="radio"><input type="radio" name="payment" value="card"> Онлайн с карта</label>
+        </fieldset>
+
+        <button type="submit" class="btn btn-primary btn-block">Потвърди поръчката</button>
+      </form>
+    </div>
+
+    <div id="checkoutSuccess" hidden>
+      <div class="success-mark">✓</div>
+      <h2>Поръчката е приета!</h2>
+      <p>Номер на поръчката: <strong id="orderNumber"></strong></p>
+      <p class="muted">Това е демо поръчка — няма реално плащане или доставка.</p>
+      <button class="btn btn-primary" id="continueShopping">Продължи пазаруването</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="productModal" aria-hidden="true">
+  <div class="modal-panel modal-panel--product">
+    <button class="icon-btn modal-close" id="closeProductModal" aria-label="Затвори">✕</button>
+    <div class="product-modal-body">
+      <div class="product-modal-media">
+        <span class="product-badge" id="pmBadge" hidden></span>
+        <p class="product-modal-desc" id="pmDesc"></p>
+        <svg class="product-modal-jar" id="pmJarSvg" viewBox="0 0 120 160"><use id="pmJarUse" href="#jar-gold"/></svg>
+<img class="product-modal-photo" id="pmPhoto" src="" alt="" hidden>
+      </div>
+      <div class="product-modal-info">
+        <h2 id="pmName"></h2>
+        <p class="product-modal-region" id="pmRegion"></p>
+
+        <div class="variant-block" id="pmVariantBlock">
+          <span class="field-label">Грамаж</span>
+          <div class="variant-group" id="pmVariants"></div>
+        </div>
+
+        <div class="qty-row">
+          <span class="field-label">Количество</span>
+          <div class="qty-stepper qty-stepper--lg" id="pmQtyStepper">
+            <button type="button" data-act="minus" aria-label="Намали">−</button>
+            <span id="pmQty">1</span>
+            <button type="button" data-act="plus" aria-label="Увеличи">+</button>
+          </div>
+        </div>
+
+        <div class="product-modal-total">
+          <span>Общо</span>
+          <strong id="pmTotal">0.00 €</strong>
+        </div>
+
+        <button class="btn btn-primary btn-block" id="pmAddBtn">Добави в количката</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js" defer></script>
+</body>
+</html>

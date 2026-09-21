@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Управление — Фермата на Стелко</title>
+<meta name="robots" content="noindex">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --comb:      #241708;
+  --comb-soft: #3A2916;
+  --bg:        #F4EEDF;
+  --paper:     #FFFDF7;
+  --ink:       #33220F;
+  --ink-soft:  #6E5A3B;
+  --line:      rgba(51,34,15,0.12);
+  --honey:     #E7A427;
+  --ribbon:    #C1442C;
+  --sage:      #5B6B45;
+
+  --mono: 'Space Mono', monospace;
+  --body: 'Inter', sans-serif;
+}
+
+*,*::before,*::after{ box-sizing: border-box; }
+body{
+  margin:0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.5;
+}
+h1,h2,h3{ margin:0; font-weight:600; }
+button{ font: inherit; cursor: pointer; }
+input,select{ font: inherit; color: inherit; }
+
+/* ---------- лента най-горе ---------- */
+.bar{
+  background: var(--comb);
+  color: #F3E4C2;
+  padding: .85rem 1.5rem;
+  display:flex; align-items:center; gap:1.25rem;
+  flex-wrap: wrap;
+}
+.bar h1{
+  font-family:'Fraunces',serif;
+  font-size: 1.15rem;
+  letter-spacing:.01em;
+  margin-right:auto;
+}
+.bar .who{ font-size:.82rem; color:#B9A481; }
+.bar button{
+  background: transparent;
+  border: 1px solid rgba(243,228,194,.3);
+  color:#F3E4C2;
+  padding:.35rem .8rem;
+  border-radius:8px;
+}
+.bar button:hover{ background: var(--comb-soft); }
+
+/* ---------- превключване на изгледи ---------- */
+.tabs{
+  display:flex; gap:.25rem;
+  padding: 0 1.5rem;
+  border-bottom:1px solid var(--line);
+  background: var(--paper);
+}
+.tabs button{
+  background:none; border:none;
+  padding:.9rem 1rem;
+  color: var(--ink-soft);
+  border-bottom:2px solid transparent;
+  margin-bottom:-1px;
+}
+.tabs button.on{ color: var(--ink); border-bottom-color: var(--honey); font-weight:500; }
+
+main{ max-width: 1080px; margin: 0 auto; padding: 1.75rem 1.5rem 4rem; }
+.view[hidden]{ display:none; }
+
+.headline{ display:flex; align-items:baseline; gap:.75rem; margin-bottom:1.25rem; }
+.headline h2{ font-size:1.05rem; }
+.headline .count{ font-family:var(--mono); font-size:.82rem; color:var(--ink-soft); }
+
+/* ---------- поръчки ---------- */
+.order{
+  background: var(--paper);
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin-bottom:.6rem;
+  overflow:hidden;
+}
+.order-head{
+  display:grid;
+  grid-template-columns: 8.5rem 1fr 6rem 6.5rem 9.5rem;
+  gap:1rem; align-items:center;
+  padding:.85rem 1rem;
+}
+.order-head > .id{ font-family:var(--mono); font-size:.85rem; }
+.order-head .when{ font-size:.8rem; color:var(--ink-soft); }
+.order-head .sum{ font-family:var(--mono); font-weight:700; text-align:right; }
+.order-toggle{
+  background:none; border:none; padding:0;
+  text-align:left; color:inherit;
+}
+.order-toggle:hover .cust{ text-decoration: underline; }
+.cust{ font-weight:500; }
+
+select.status{
+  width:100%;
+  padding:.4rem .5rem;
+  border-radius:7px;
+  border:1px solid var(--line);
+  background: var(--bg);
+}
+.order[data-status="new"]{ border-left:3px solid var(--honey); }
+.order[data-status="pending"]{ border-left:3px dashed var(--ink-soft); }
+.order[data-status="delivered"] .sum{ color: var(--sage); }
+.order[data-status="cancelled"]{ opacity:.55; }
+
+.order-body{
+  border-top:1px solid var(--line);
+  padding:1rem;
+  background:#FFFAEE;
+  display:grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap:1.5rem;
+}
+.order-body h3{ font-size:.82rem; color:var(--ink-soft); font-weight:500; margin-bottom:.5rem; }
+.line{ display:flex; justify-content:space-between; gap:1rem; padding:.3rem 0; border-bottom:1px dotted var(--line); }
+.line:last-child{ border-bottom:none; }
+.line .qty{ font-family:var(--mono); color:var(--ink-soft); }
+.line .amt{ font-family:var(--mono); }
+.contact p{ margin:.2rem 0; }
+.contact a{ color:var(--ink); }
+
+/* ---------- наличности ---------- */
+.prod{ margin-bottom:1.5rem; }
+.prod > h3{ font-size:.95rem; margin-bottom:.4rem; }
+.stock-row{
+  display:grid;
+  grid-template-columns: 1fr 5.5rem 7rem 5rem;
+  gap:1rem; align-items:center;
+  background: var(--paper);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:.55rem .9rem;
+  margin-bottom:.35rem;
+}
+.stock-row .price{ font-family:var(--mono); font-size:.85rem; color:var(--ink-soft); text-align:right; }
+.stock-row input{
+  width:100%;
+  font-family:var(--mono);
+  padding:.4rem .55rem;
+  border:1px solid var(--line);
+  border-radius:7px;
+  background: var(--bg);
+  text-align:right;
+}
+.stock-row input:focus{ outline:2px solid var(--honey); outline-offset:1px; }
+.stock-row .note{ font-size:.78rem; color:var(--sage); }
+.stock-row.low{ border-left:3px solid var(--ribbon); }
+.stock-row.low .warn{ font-size:.78rem; color:var(--ribbon); }
+
+/* ---------- вход ---------- */
+.login{
+  max-width: 21rem;
+  margin: 5rem auto;
+  background: var(--paper);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:1.75rem;
+}
+.login h2{ font-family:'Fraunces',serif; font-size:1.25rem; margin-bottom:.35rem; }
+.login p{ margin:0 0 1.25rem; color:var(--ink-soft); font-size:.88rem; }
+.login label{ display:block; margin-bottom:.85rem; font-size:.85rem; color:var(--ink-soft); }
+.login input{
+  display:block; width:100%; margin-top:.3rem;
+  padding:.55rem .7rem;
+  border:1px solid var(--line); border-radius:8px;
+  background: var(--bg);
+}
+.login input:focus{ outline:2px solid var(--honey); outline-offset:1px; }
+.login button{
+  width:100%; margin-top:.5rem;
+  background: var(--comb); color:#F3E4C2;
+  border:none; border-radius:8px; padding:.65rem;
+  font-weight:500;
+}
+.login button:hover{ background: var(--comb-soft); }
+.login button:disabled{ opacity:.6; cursor:not-allowed; }
+
+.alert{
+  margin-bottom:1rem; padding:.6rem .8rem;
+  border-left:3px solid var(--ribbon);
+  background: rgba(193,68,44,.08);
+  color: var(--ribbon);
+  font-size:.85rem; border-radius:6px;
+}
+.empty{
+  padding:3rem 1rem; text-align:center;
+  color:var(--ink-soft); font-size:.9rem;
+  border:1px dashed var(--line); border-radius:10px;
+}
+
+@media (max-width: 760px){
+  .order-head{ grid-template-columns: 1fr 1fr; gap:.5rem; }
+  .order-head .sum{ text-align:left; }
+  .order-body{ grid-template-columns: 1fr; }
+  .stock-row{ grid-template-columns: 1fr 4.5rem 6rem; }
+  .stock-row .note, .stock-row .warn{ grid-column: 1 / -1; }
+}
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; }
+}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+/* ================================================================
+   НАСТРОЙКИ — същите две стойности като в script.js
+================================================================= */
+const SUPABASE_URL      = 'https://lmjlsczvoelmisnlhrfd.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_CP_poas3360AW0aj5RhnGA_Nr5KkQCd';
+
+/* ================================================================
+   ВРЪЗКА
+   Токенът от входа стои в sessionStorage — губи се при затваряне
+   на раздела. Тайният ключ на проекта не се ползва никъде.
+================================================================= */
+const session = {
+  get token(){ return sessionStorage.getItem('adm_token'); },
+  get email(){ return sessionStorage.getItem('adm_email'); },
+  save(token, email){
+    sessionStorage.setItem('adm_token', token);
+    sessionStorage.setItem('adm_email', email);
+  },
+  clear(){ sessionStorage.clear(); }
+};
+
+async function api(path, opts = {}){
+  const r = await fetch(SUPABASE_URL + '/rest/v1/' + path, Object.assign({}, opts, {
+    headers: Object.assign({
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: 'Bearer ' + session.token,
+      'Content-Type': 'application/json',
+    }, opts.headers || {})
+  }));
+  if(r.status === 401){ session.clear(); renderLogin('Времето за работа изтече. Впиши се пак.'); throw new Error('401'); }
+  if(!r.ok) throw new Error('Заявката не мина (' + r.status + ')');
+  return r.status === 204 ? null : r.json();
+}
+
+async function signIn(email, password){
+  const r = await fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
+    method:'POST',
+    headers:{ apikey: SUPABASE_ANON_KEY, 'Content-Type':'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+  const d = await r.json();
+  if(!r.ok){
+    // Supabase връща съобщенията на английски — превеждаме честите
+    const raw = String(d.error_description || d.msg || d.message || '');
+    if(/invalid login/i.test(raw))     throw new Error('Имейлът или паролата не съвпадат.');
+    if(/not confirmed/i.test(raw))     throw new Error('Профилът не е потвърден. Включи "Auto Confirm User" в Supabase.');
+    if(/rate limit|too many/i.test(raw)) throw new Error('Твърде много опити. Изчакай минута.');
+    throw new Error(raw || 'Входът не мина.');
+  }
+  return d.access_token;
+}
+
+/* ================================================================
+   ЕКРАН ЗА ВХОД
+================================================================= */
+const app = document.getElementById('app');
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function renderLogin(msg){
+  app.innerHTML = `
+    <div class="login">
+      <h2>Фермата на Стелко</h2>
+      <p>Управление на поръчките и наличностите.</p>
+      ${msg ? `<div class="alert">${esc(msg)}</div>` : ''}
+      <form id="loginForm">
+        <label>Имейл<input type="email" name="email" required autocomplete="username"></label>
+        <label>Парола<input type="password" name="password" required autocomplete="current-password"></label>
+        <button type="submit">Влез</button>
+      </form>
+    </div>`;
+
+  document.getElementById('loginForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    const data = new FormData(e.target);
+    btn.disabled = true; btn.textContent = 'Проверка…';
+    try {
+      const token = await signIn(data.get('email'), data.get('password'));
+      session.save(token, data.get('email'));
+      renderApp();
+    } catch(err){
+      renderLogin(err.message);
+    }
+  });
+}
+
+/* ================================================================
+   ОСНОВЕН ИЗГЛЕД
+================================================================= */
+const STATUS = {
+  pending:   'Чака плащане',
+  new:       'Нова',
+  confirmed: 'Потвърдена',
+  shipped:   'Изпратена',
+  delivered: 'Доставена',
+  cancelled: 'Отказана',
+};
+const DELIVERY = { address:'до адрес', office:'до офис' };
+const PAYMENT  = { cod:'наложен платеж', card:'с карта' };
+
+const money = n => Number(n).toFixed(2) + ' €';
+const when  = s => new Date(s).toLocaleDateString('bg-BG', {
+  day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'
+});
+
+function renderApp(){
+  app.innerHTML = `
+    <div class="bar">
+      <h1>Фермата на Стелко</h1>
+      <span class="who">${esc(session.email || '')}</span>
+      <button id="out">Излез</button>
+    </div>
+    <div class="tabs">
+      <button class="on" data-view="orders">Поръчки</button>
+      <button data-view="stock">Наличности</button>
+    </div>
+    <main>
+      <section class="view" id="viewOrders"><p class="empty">Зареждане…</p></section>
+      <section class="view" id="viewStock" hidden><p class="empty">Зареждане…</p></section>
+    </main>`;
+
+  document.getElementById('out').addEventListener('click', () => {
+    session.clear(); renderLogin();
+  });
+
+  document.querySelectorAll('.tabs button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('on', x === b));
+      document.getElementById('viewOrders').hidden = b.dataset.view !== 'orders';
+      document.getElementById('viewStock').hidden  = b.dataset.view !== 'stock';
+    });
+  });
+
+  loadOrders();
+  loadStock();
+}
+
+/* ---------------- поръчки ---------------- */
+async function loadOrders(){
+  const box = document.getElementById('viewOrders');
+  try {
+    const rows = await api('orders?select=*,order_items(product_name,variant_label,unit_price,qty,line_total)&order=created_at.desc');
+
+    if(!rows.length){
+      box.innerHTML = '<p class="empty">Още няма поръчки. Направи една от сайта, за да провериш, че всичко работи.</p>';
+      return;
+    }
+
+    const fresh = rows.filter(o => o.status === 'new').length;
+    box.innerHTML = `
+      <div class="headline">
+        <h2>Поръчки</h2>
+        <span class="count">${rows.length} общо${fresh ? ' · ' + fresh + ' необработени' : ''}</span>
+      </div>
+      ${rows.map(orderHTML).join('')}`;
+
+    box.querySelectorAll('.order-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const body = btn.closest('.order').querySelector('.order-body');
+        body.hidden = !body.hidden;
+      });
+    });
+
+    box.querySelectorAll('select.status').forEach(sel => {
+      sel.addEventListener('change', async () => {
+        const card = sel.closest('.order');
+        const prev = card.dataset.status;
+        card.dataset.status = sel.value;
+        try {
+          await api('orders?id=eq.' + sel.dataset.id, {
+            method:'PATCH', body: JSON.stringify({ status: sel.value })
+          });
+        } catch(err){
+          card.dataset.status = prev;
+          sel.value = prev;
+          alert('Промяната не се запази: ' + err.message);
+        }
+      });
+    });
+  } catch(err){
+    box.innerHTML = `<div class="alert">${esc(err.message)}</div>`;
+  }
+}
+
+function orderHTML(o){
+  return `
+    <article class="order" data-status="${o.status}">
+      <div class="order-head">
+        <span class="id">${esc(o.order_number)}</span>
+        <button class="order-toggle">
+          <span class="cust">${esc(o.customer_name)}</span>
+          <span class="when"> · ${esc(o.city)} · ${when(o.created_at)}</span>
+        </button>
+        <span class="when">${o.order_items.length} ${o.order_items.length === 1 ? 'артикул' : 'артикула'}</span>
+        <span class="sum">${money(o.total)}</span>
+        <select class="status" data-id="${o.id}"${o.status === 'pending' ? ' disabled title="Изчаква потвърждение от Stripe"' : ''}>
+          ${Object.entries(STATUS).map(([k,v]) =>
+            `<option value="${k}"${k === o.status ? ' selected' : ''}>${v}</option>`).join('')}
+        </select>
+      </div>
+      <div class="order-body" hidden>
+        ${o.payment_status === 'unpaid' ? '<div class="alert" style="grid-column:1/-1;margin:0">Картовото плащане още не е потвърдено. Стоката е запазена; ако не бъде платена до час, се освобождава.</div>' : ''}
+        <div>
+          <h3>Поръчано</h3>
+          ${o.order_items.map(i => `
+            <div class="line">
+              <span><span class="qty">${i.qty} ×</span> ${esc(i.product_name)}, ${esc(i.variant_label)}</span>
+              <span class="amt">${money(i.line_total)}</span>
+            </div>`).join('')}
+        </div>
+        <div class="contact">
+          <h3>Доставка</h3>
+          <p>${esc(o.address)}, ${esc(o.city)}</p>
+          <p>${DELIVERY[o.delivery_method] || o.delivery_method}, ${PAYMENT[o.payment_method] || o.payment_method}</p>
+          <p><a href="tel:${esc(o.phone)}">${esc(o.phone)}</a></p>
+          <p><a href="mailto:${esc(o.email)}">${esc(o.email)}</a></p>
+        </div>
+      </div>
+    </article>`;
+}
+
+/* ---------------- наличности ---------------- */
+async function loadStock(){
+  const box = document.getElementById('viewStock');
+  try {
+    const rows = await api('products?select=id,name,variants(id,label,price,stock,sort_order)&order=name');
+    const low = rows.reduce((n,p) => n + p.variants.filter(v => v.stock < 10).length, 0);
+
+    box.innerHTML = `
+      <div class="headline">
+        <h2>Наличности</h2>
+        <span class="count">${low ? low + ' грамажа на привършване' : 'всичко е заредено'}</span>
+      </div>
+      ${rows.map(p => `
+        <div class="prod">
+          <h3>${esc(p.name)}</h3>
+          ${p.variants.slice().sort((a,b) => a.sort_order - b.sort_order).map(v => `
+            <div class="stock-row ${v.stock < 10 ? 'low' : ''}">
+              <span>${esc(v.label)}</span>
+              <span class="price">${money(v.price)}</span>
+              <input type="number" min="0" step="1" value="${v.stock}" data-id="${v.id}" aria-label="Наличност за ${esc(p.name)} ${esc(v.label)}">
+              <span class="note"></span>
+            </div>`).join('')}
+        </div>`).join('')}`;
+
+    box.querySelectorAll('input[data-id]').forEach(input => {
+      let last = input.value;
+      input.addEventListener('change', async () => {
+        const row = input.closest('.stock-row');
+        const note = row.querySelector('.note');
+        const val = parseInt(input.value, 10);
+
+        if(isNaN(val) || val < 0){ input.value = last; return; }
+
+        note.textContent = 'запазване…';
+        try {
+          await api('variants?id=eq.' + input.dataset.id, {
+            method:'PATCH', body: JSON.stringify({ stock: val })
+          });
+          last = String(val);
+          row.classList.toggle('low', val < 10);
+          note.textContent = 'запазено';
+          setTimeout(() => { note.textContent = ''; }, 1800);
+        } catch(err){
+          input.value = last;
+          note.textContent = 'не се запази';
+        }
+      });
+    });
+  } catch(err){
+    box.innerHTML = `<div class="alert">${esc(err.message)}</div>`;
+  }
+}
+
+/* ================================================================
+   СТАРТ
+================================================================= */
+if(session.token) renderApp(); else renderLogin();
+</script>
+</body>
+</html>
